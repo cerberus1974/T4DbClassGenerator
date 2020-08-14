@@ -7,9 +7,20 @@ using System.Collections.Generic;
 
 namespace <#= NameSpace #>
 {
-    public class Hoge
+    #nullable enable
+    public class <#= TableInfo.Name #>
     {
-        public Hoge()
+        <#
+            foreach(var column in TableInfo.ColumnInfos)
+            {
+        #>
+
+        public <#= column.Type #><#= column.NotNull ? "" : "?" #> <#= column.Name #> { get; set; }
+        <#
+            }
+        #>
+
+        public <#= TableInfo.Name #>()
         {
         }
     }

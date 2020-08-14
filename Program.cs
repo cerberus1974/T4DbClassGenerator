@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleAppFramework;
+using DataClassGenerator.Material;
 using Microsoft.Extensions.Hosting;
 
 namespace DataClassGenerator
@@ -19,7 +21,18 @@ namespace DataClassGenerator
             [Option("n", "namespace name")]string namespaceName
             )
         {
-            ITemplate template = new TextTemplate(namespaceName);
+            var tableInfo = new TableInfo
+            {
+                Name = "TestTable",
+                ColumnInfos = new List<ColumnInfo>
+                {
+                    new ColumnInfo { Name = "Column1", Type = "int", NotNull = true },
+                    new ColumnInfo { Name = "Column2", Type = "string", NotNull = true },
+                    new ColumnInfo { Name = "Column3", Type = "string", NotNull = false },
+                }
+            };
+
+            ITemplate template = new TextTemplate(namespaceName, tableInfo);
 
             File.WriteAllText(outputPath, template.TransformText(), new UTF8Encoding(false));
             Console.WriteLine(template.TransformText());
