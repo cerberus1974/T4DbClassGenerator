@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using ConsoleAppFramework;
 using Microsoft.Extensions.Hosting;
@@ -17,8 +19,10 @@ namespace DataClassGenerator
             [Option("n", "namespace name")]string namespaceName
             )
         {
-            Console.WriteLine(outputPath);
-            Console.WriteLine(namespaceName);
+            ITemplate template = new TextTemplate(namespaceName);
+
+            File.WriteAllText(outputPath, template.TransformText(), new UTF8Encoding(false));
+            Console.WriteLine(template.TransformText());
         }
     }
 }
